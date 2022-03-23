@@ -2,12 +2,13 @@ package com.hfad.stopwatch
 
 import android.os.Bundle
 import android.os.SystemClock
-import android.widget.Button
 import android.widget.Chronometer
 import androidx.appcompat.app.AppCompatActivity
+import com.hfad.stopwatch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     lateinit var stopwatch: Chronometer
     private var running = false
     private var offset = 0L
@@ -18,50 +19,48 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        stopwatch = findViewById(R.id.stopwatch)
-        val startButton = findViewById<Button>(R.id.start_button)
-        val pauseButton = findViewById<Button>(R.id.pause_button)
-        val resetButton = findViewById<Button>(R.id.reset_button)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         if (savedInstanceState != null) {
             offset = savedInstanceState.getLong(OFFSET_KEY)
             running = savedInstanceState.getBoolean(RUNNING_KEY)
 
             if (running) {
-                stopwatch.base = savedInstanceState.getLong(BASE_KEY)
-                stopwatch.start()
+                binding.stopwatch.base = savedInstanceState.getLong(BASE_KEY)
+                binding.stopwatch.start()
             } else setBaseTime()
         }
-        startButton.setOnClickListener {
+        binding.startButton.setOnClickListener {
             if (!running) {
                 setBaseTime()
-                stopwatch.start()
+                binding.stopwatch.start()
                 running = true
             }
         }
 
-        pauseButton.setOnClickListener {
+        binding.pauseButton.setOnClickListener {
             if (running) {
                 saveOffset()
-                stopwatch.stop()
+                binding.stopwatch.stop()
                 running = false
             }
         }
 
-        resetButton.setOnClickListener {
+        binding.resetButton.setOnClickListener {
             offset = 0
             setBaseTime()
         }
     }
 
     private fun setBaseTime() {
-        stopwatch.base = SystemClock.elapsedRealtime() - offset
+        binding.stopwatch.base = SystemClock.elapsedRealtime() - offset
     }
 
     private fun saveOffset() {
-        offset = SystemClock.elapsedRealtime() - stopwatch.base
+        offset = SystemClock.elapsedRealtime() - binding.stopwatch.base
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

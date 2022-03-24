@@ -13,9 +13,6 @@ class MainActivity : AppCompatActivity() {
     private var running = false
     private var offset = 0L
 
-    private val BASE_KEY = "base"
-    private val OFFSET_KEY = "key"
-    private val RUNNING_KEY = "running"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,5 +82,11 @@ class MainActivity : AppCompatActivity() {
             stopwatch.start()
             offset = 0
         }
+    }
+
+    companion object {
+        private const val BASE_KEY = "base"
+        private const val OFFSET_KEY = "key"
+        private const val RUNNING_KEY = "running"
     }
 }
